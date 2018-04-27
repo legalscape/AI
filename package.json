@@ -1,0 +1,21 @@
+{
+  "name": "asana-slack",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node bot",
+    "create-directory": "node directory",
+    "remind": "node remind",
+    "verify": "slack-verify",
+    "slack-info": "node slack-info"
+  },
+  "author": "Yuto Kisuge",
+  "license": "MIT",
+  "dependencies": {
+    "@slack/client": "^4.1.0",
+    "@slack/events-api": "^1.0.1",
+    "asana": "^0.15.1",
+    "config": "^1.30.0",
+    "jsonfile": "^4.0.0"
+  }
+}
