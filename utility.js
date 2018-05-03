@@ -1,8 +1,8 @@
 const jsonfile = require('jsonfile');
 
-const directory = jsonfile.readFileSync('directory.json').directory;
+const mappings = jsonfile.readFileSync('mappings.json');
 const getSlackMentionByAsanaId = ({id, name}) => {
-  for (const {asana, slack} of directory) {
+  for (const {asana, slack} of mappings.users) {
     if (asana === id) {
       return `<@${slack}>`;
     }
@@ -16,7 +16,7 @@ const getAsanaIdBySlackId = id => {
     id = id.slice(2, -1);
   }
 
-  for (const {asana, slack} of directory) {
+  for (const {asana, slack} of mappings.users) {
     if (slack === id) {
       return asana;
     }
@@ -26,9 +26,19 @@ const getAsanaIdBySlackId = id => {
 };
 
 const getName = id => {
-  for (const {name, asana, slack} of directory) {
+  for (const {name, asana, slack} of mappings.users) {
     if (asana === id || slack === id) {
       return name;
+    }
+  }
+
+  return null;
+};
+
+const getAsanaProjectIdBySlackChannelId = id => {
+  for (const {asana, slack} of mappings.channels) {
+    if (slack === id) {
+      return asana;
     }
   }
 
@@ -39,4 +49,5 @@ module.exports = {
   getSlackMentionByAsanaId,
   getAsanaIdBySlackId,
   getName,
+  getAsanaProjectIdBySlackChannelId,
 };

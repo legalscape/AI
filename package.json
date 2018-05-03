@@ -1,21 +1,23 @@
 {
-  "name": "asana-slack",
+  "name": "AI",
   "version": "1.0.0",
-  "description": "",
+  "description": "Super great AI",
   "scripts": {
-    "start": "node bot",
-    "create-directory": "node directory",
-    "remind": "node remind",
-    "verify": "slack-verify",
+    "start": "hubot -a slack",
+    "init-mappings": "node init-mappings",
     "slack-info": "node slack-info"
   },
-  "author": "Yuto Kisuge",
+  "author": "Yusuke Kido <yusuke.kido@legalscape.co.jp>",
   "license": "MIT",
   "dependencies": {
-    "@slack/client": "^4.1.0",
-    "@slack/events-api": "^1.0.1",
+    "@slack/client": "^4.2.0",
     "asana": "^0.15.1",
     "config": "^1.30.0",
+    "dateism": "0.0.2",
+    "hubot": "^2.19.0",
+    "hubot-help": "^0.2.2",
+    "hubot-scripts": "^2.17.2",
+    "hubot-slack": "^4.4.0",
     "jsonfile": "^4.0.0"
   }
 }
