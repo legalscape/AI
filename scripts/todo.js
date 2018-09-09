@@ -40,23 +40,37 @@ module.exports = robot => {
       }
     }
 
-    const project = getAsanaProjectIdBySlackChannelId(res.message.room);
+    if (res.message.rawMessage.channel.is_im) {
+      asana.tasks.create({
+        name: name.join(' '),
+        followers: [assignedBy, assignedTo],
+        assignee: assignedTo,
+        due_on: due,
+        workspace: config.asana.organizationId,
+      }).then(_ => slack.reactions.add({
+        name: 'secret',
+        channel: res.message.room,
+        timestamp: res.message.id,
+      })).catch(console.error);
+    } else {
+      const project = getAsanaProjectIdBySlackChannelId(res.message.room);
 
-    if (!project) {
-      res.reply("Well, actually I don't know the project to add that.");
-      return;
+      if (!project) {
+        res.reply("Well, actually I don't know the project to add that.");
+        return;
+      }
+
+      asana.tasks.create({
+        name: name.join(' '),
+        followers: [assignedBy, assignedTo],
+        assignee: assignedTo,
+        projects: [project],
+        due_on: due,
+      }).then(_ => slack.reactions.add({
+        name: 'thumbsup',
+        channel: res.message.room,
+        timestamp: res.message.id,
+      })).catch(console.error);
     }
-
-    asana.tasks.create({
-      name: name.join(' '),
-      followers: [assignedBy, assignedTo],
-      assignee: assignedTo,
-      projects: [project],
-      due_on: due,
-    }).then(_ => slack.reactions.add({
-      name: 'thumbsup',
-      channel: res.message.room,
-      timestamp: res.message.id,
-    })).catch(console.error);
   });
 };
