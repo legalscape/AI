@@ -10,14 +10,14 @@
   "author": "Yusuke Kido <yusuke.kido@legalscape.co.jp>",
   "license": "MIT",
   "dependencies": {
-    "@slack/client": "^4.2.0",
-    "asana": "^0.15.1",
-    "config": "^1.30.0",
+    "@slack/client": "^4.6.0",
+    "asana": "^0.16.1",
+    "config": "^1.31.0",
     "dateism": "0.0.2",
     "hubot": "^2.19.0",
     "hubot-help": "^0.2.2",
     "hubot-scripts": "^2.17.2",
-    "hubot-slack": "^4.4.0",
+    "hubot-slack": "^4.5.4",
     "jsonfile": "^4.0.0"
   }
 }

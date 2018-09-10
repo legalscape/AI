@@ -40,7 +40,8 @@ module.exports = robot => {
       }
     }
 
-    if (res.message.rawMessage.channel.is_im) {
+    if (res.message.rawMessage.channel.charAt(0) === 'D') {
+      // DM
       asana.tasks.create({
         name: name.join(' '),
         followers: [assignedBy, assignedTo],
