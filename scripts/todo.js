@@ -65,7 +65,7 @@ module.exports = robot => {
         name: name.join(' '),
         followers: [assignedBy, assignedTo],
         assignee: assignedTo,
-        projects: [project],
+        projects: [project, config.asana.universalProjectId],
         due_on: due,
       }).then(_ => slack.reactions.add({
         name: 'thumbsup',
