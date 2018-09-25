@@ -5,15 +5,18 @@
   "scripts": {
     "start": "hubot -a slack",
     "init-mappings": "node init-mappings",
-    "slack-info": "node slack-info"
+    "slack-info": "node slack-info",
+    "webhook": "node webhook"
   },
   "author": "Yusuke Kido <yusuke.kido@legalscape.co.jp>",
   "license": "MIT",
   "dependencies": {
     "@slack/client": "^4.6.0",
     "asana": "^0.16.1",
+    "body-parser": "^1.18.3",
     "config": "^1.31.0",
     "dateism": "0.0.2",
+    "express": "^4.16.3",
     "hubot": "^3.1.1",
     "hubot-help": "^0.2.2",
     "hubot-scripts": "^2.17.2",
