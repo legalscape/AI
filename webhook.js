@@ -21,6 +21,10 @@ app.post('/asana', async (req, res) => {
       const task = await asana.tasks.findById(resource);
       const isInUniverse = task.projects.some(p => p.id == project);
 
+      if (task.parent) {
+        continue;
+      }
+
       if (task.completed && isInUniverse) {
         asana.tasks.removeProject(task.id, { project })
           .catch(error => console.log(error.value.errors));
