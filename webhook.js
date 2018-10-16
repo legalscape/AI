@@ -13,25 +13,28 @@ app.post('/asana', async (req, res) => {
   const project = config.asana.universalProjectId;
 
   if (req.body.events) {
-    for (const { resource, type } of req.body.events) {
-      if (type !== 'task') {
+    for (const { resource, type, action } of req.body.events) {
+      if (type !== 'task' || action === 'deleted') {
         continue;
       }
 
-      const task = await asana.tasks.findById(resource);
-      const isInUniverse = task.projects.some(p => p.id == project);
+      asana.tasks.findById(resource)
+        .then(task => {
+          const isInUniverse = task.projects.some(p => p.id == project);
 
-      if (task.parent) {
-        continue;
-      }
+          if (task.parent) {
+            return;
+          }
 
-      if (task.completed && isInUniverse) {
-        asana.tasks.removeProject(task.id, { project })
-          .catch(error => console.log(error.value.errors));
-      } else if (!task.completed && !isInUniverse) {
-        asana.tasks.addProject(task.id, { project })
-          .catch(error => console.log(error.value.errors));
-      }
+          if (task.completed && isInUniverse) {
+            asana.tasks.removeProject(task.id, { project })
+              .catch(error => console.log(error.value.errors));
+          } else if (!task.completed && !isInUniverse) {
+            asana.tasks.addProject(task.id, { project })
+              .catch(error => console.log(error.value.errors));
+          }
+        })
+        .catch(error => console.log(type, action, error.value.errors));
     }
   }
 
