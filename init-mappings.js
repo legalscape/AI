@@ -106,5 +106,5 @@ const myFilter = isPrivate => function({id, name}) {
     }
   }, {spaces: 2});
 
-  console.log('Now please edit mappings.json manually.');
+  console.log('Now please edit mappings.json manually or npm run update-mappings.');
 })();

@@ -5,6 +5,7 @@
   "scripts": {
     "start": "hubot -a slack",
     "init-mappings": "node init-mappings",
+    "update-mappings": "node update-mappings",
     "slack-info": "node slack-info",
     "webhook": "node webhook"
   },
@@ -21,6 +22,7 @@
     "hubot-help": "^0.2.2",
     "hubot-scripts": "^2.17.2",
     "hubot-slack": "^4.5.5",
+    "inquirer": "^6.2.1",
     "jsonfile": "^4.0.0"
   }
 }
