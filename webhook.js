@@ -5,6 +5,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const asana = Asana.Client.create().useAccessToken(config.asana.accessToken);
+
+const { WebClient } = require('@slack/client');
+const slack = new WebClient(config.slack.botUserAccessToken);
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -40,6 +44,13 @@ app.post('/asana', async (req, res) => {
 
   res.set('X-Hook-Secret', req.get('X-Hook-Secret'));
   res.send('ok');
+});
+
+app.post(`/ai-says/${config.ai.says.secret}`, (req, res) => {
+  const { channel, text } = req.body;
+  slack.chat.postMessage({ channel, text })
+    .then(data => res.send(data))
+    .catch(({ data }) => res.send(data));
 });
 
 app.listen(config.asana.webhook.port, async () => {
