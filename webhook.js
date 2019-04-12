@@ -60,10 +60,14 @@ app.listen(config.asana.webhook.port, async () => {
     const { team } = await asana.projects.findById(config.asana.universalProjectId);
     const projects = await asana.projects.findByTeam(team.id, {archived: false});
 
-    projects.data.forEach(async project => {
-      await asana.webhooks.create(project.id, config.asana.webhook.url)
-        .then(res => console.log(`Webhook set on ${res.resource.name} (${res.resource.id})`))
-        .catch(error => console.log(project.name, error.value.errors));
+    projects.data.forEach((project, i) => {
+      setTimeout(async () => {
+        await asana.webhooks.create(project.id, config.asana.webhook.url)
+          .then(res => console.log(`[${i + 1} / ${projects.data.length}]`,
+                                   `Webhook set on ${res.resource.name} (${res.resource.id})`))
+          .catch(error => console.log(`[${i + 1} / ${projects.data.length}]`,
+                                      project.name, error.value.errors));
+      }, i * 100);
     });
   }
 });
