@@ -76,7 +76,7 @@ const myFilter = isPrivate => function({id, name}) {
     limit: 100,
   });
   if (res1.response_metadata.next_cursor) {
-    throw new Exception('not implemented');
+    throw new Error('not implemented');
   }
   const res2 = await slack.groups.list({
     exclude_archived: true,
