@@ -26,7 +26,7 @@ app.post('/asana', async (req, res) => {
         .then(task => {
           const isInUniverse = task.projects.some(p => p.id == project);
 
-          if (task.parent) {
+          if (task.parent || task.resource_subtype === 'section' || task.resource_subtype === 'milestone') {
             return;
           }
 
