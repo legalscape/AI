@@ -7,13 +7,14 @@
     "init-mappings": "node init-mappings",
     "update-mappings": "node update-mappings",
     "slack-info": "node slack-info",
-    "webhook": "node webhook"
+    "webhook": "node webhook",
+    "outdated-tasks": "node outdated"
   },
   "author": "Yusuke Kido <yusuke.kido@legalscape.co.jp>",
   "license": "MIT",
   "dependencies": {
     "@slack/client": "^4.6.0",
-    "asana": "^0.16.6",
+    "asana": "^0.17.1",
     "body-parser": "^1.18.3",
     "config": "^1.31.0",
     "dateism": "0.0.2",
