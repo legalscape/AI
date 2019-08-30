@@ -1,7 +1,7 @@
 const config = require('config');
 const dateism = require('dateism');
 const Asana = require('asana');
-const asana = Asana.Client.create().useAccessToken(config.asana.accessToken);
+const asana = Asana.Client.create({defaultHeaders: {'asana-enable': 'string_ids'}}).useAccessToken(config.asana.accessToken);
 const { getUsers } = require('./utility');
 const { WebClient } = require('@slack/client');
 const slack = new WebClient(config.slack.botUserAccessToken);
