@@ -5,12 +5,12 @@ const { WebClient } = require('@slack/client');
 const slack = new WebClient(config.slack.botUserAccessToken);
 const jsonfile = require('jsonfile');
 
-const myFilter = isPrivate => function({id, name}) {
-  return {id, name, isPrivate};
+const myFilter = isPrivate => function ({ id, name }) {
+  return { id, name, isPrivate };
 };
 
 (async _ => {
-  const existing = jsonfile.readFileSync('mappings.json', {throws: false});
+  const existing = jsonfile.readFileSync('mappings.json', { throws: false });
 
   if (existing) {
     console.log('mappings.json already exists and the existing mappings recorded in it will be kept.');
@@ -19,22 +19,22 @@ const myFilter = isPrivate => function({id, name}) {
   console.log('Fetching Asana user list...');
   let users = {};
   const knownAsanaUsers = existing ? existing.users.map(o => o.asana) : [];
-  for (const {id, name} of (await asana.users.findByWorkspace(config.asana.organizationId)).data) {
+  for (const { id, name } of (await asana.users.findByWorkspace(config.asana.organizationId)).data) {
     if (knownAsanaUsers.indexOf(id) < 0) {
-      users[name] = {asanaId: id};
+      users[name] = { asanaId: id };
     }
   }
 
   console.log('Fetching Slack user list...');
   const knownSlackUsers = existing ? existing.users.map(o => o.slack) : [];
-  for (const {id, name, real_name} of (await slack.users.list()).members) {
+  for (const { id, name, real_name } of (await slack.users.list()).members) {
     if (knownSlackUsers.indexOf(id) < 0) {
       if (users[real_name]) {
         users[real_name].slackId = id;
       } else if (users[name]) {
         users[name].slackId = id;
       } else {
-        users[real_name] = {slackId: id};
+        users[real_name] = { slackId: id };
       }
     }
   }
@@ -64,9 +64,9 @@ const myFilter = isPrivate => function({id, name}) {
   let asanaTeams = (await asana.teams.findByOrganization(config.asana.organizationId)).data;
   for (let i = 0; i < asanaTeams.length; ++i) {
     asanaTeams[i].projects =
-      (await asana.projects.findByTeam(asanaTeams[i].id, {archived: false}))
-      .data
-      .filter(p => knownAsanaProjects.indexOf(p.id) < 0);
+      (await asana.projects.findByTeam(asanaTeams[i].gid, { archived: false }))
+        .data
+        .filter(p => knownAsanaProjects.indexOf(p.gid) < 0);
   }
 
   console.log('Fetching Slack channel list...');
@@ -83,9 +83,9 @@ const myFilter = isPrivate => function({id, name}) {
   });
 
   const slackChannels = res1.channels.map(myFilter(false))
-        .concat(res2.groups.map(myFilter(true)))
-        .filter(c => knownSlackChannels.indexOf(c.id) < 0)
-        .sort((x, y) => x.name.localeCompare(y.name));
+    .concat(res2.groups.map(myFilter(true)))
+    .filter(c => knownSlackChannels.indexOf(c.id) < 0)
+    .sort((x, y) => x.name.localeCompare(y.name));
 
   console.log('Saving to mappings.json...');
   jsonfile.writeFileSync('mappings.json', {
@@ -104,7 +104,7 @@ const myFilter = isPrivate => function({id, name}) {
         slack: slackChannels,
       }
     }
-  }, {spaces: 2});
+  }, { spaces: 2 });
 
   console.log('Now please edit mappings.json manually or npm run update-mappings.');
 })();

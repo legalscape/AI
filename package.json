@@ -13,17 +13,17 @@
   "author": "Yusuke Kido <yusuke.kido@legalscape.co.jp>",
   "license": "MIT",
   "dependencies": {
-    "@slack/client": "^4.6.0",
-    "asana": "^0.17.1",
-    "body-parser": "^1.18.3",
+    "@slack/client": "^4.12.0",
+    "asana": "^0.17.3",
+    "body-parser": "^1.19.0",
     "config": "^1.31.0",
     "dateism": "0.0.2",
-    "express": "^4.16.3",
-    "hubot": "^3.1.1",
+    "express": "^4.17.1",
+    "hubot": "^3.3.2",
     "hubot-help": "^0.2.2",
     "hubot-scripts": "^2.17.2",
-    "hubot-slack": "^4.5.5",
-    "inquirer": "^6.2.1",
+    "hubot-slack": "^4.7.1",
+    "inquirer": "^6.5.2",
     "jsonfile": "^4.0.0"
   }
 }

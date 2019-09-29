@@ -18,27 +18,27 @@ app.post('/asana', async (req, res) => {
 
   if (req.body.events) {
     for (const { resource, type, action } of req.body.events) {
-      if (type !== 'task' || action === 'deleted') {
+      if ((type || resource.resource_type) !== 'task' || action === 'deleted') {
         continue;
       }
 
-      asana.tasks.findById(resource)
+      asana.tasks.findById(resource.gid)
         .then(task => {
-          const isInUniverse = task.projects.some(p => p.id == project);
+          const isInUniverse = task.projects.some(p => p.gid == project);
 
           if (task.parent || task.resource_subtype === 'section' || task.resource_subtype === 'milestone') {
             return;
           }
 
           if (task.completed && isInUniverse) {
-            asana.tasks.removeProject(task.id, { project })
-              .catch(error => console.log(error.value.errors));
+            asana.tasks.removeProject(task.gid, { project })
+              .catch(error => console.log(error.value || error));
           } else if (!task.completed && !isInUniverse) {
-            asana.tasks.addProject(task.id, { project })
-              .catch(error => console.log(error.value.errors));
+            asana.tasks.addProject(task.gid, { project })
+              .catch(error => console.log(error.value || error));
           }
         })
-        .catch(error => console.log(type, action, error.value.errors));
+        .catch(error => console.log((type || resource.resource_type), action, error.value || error));
     }
   }
 
@@ -58,15 +58,15 @@ app.listen(config.asana.webhook.port, async () => {
 
   if (process.argv.indexOf('--setup') > -1) {
     const { team } = await asana.projects.findById(config.asana.universalProjectId);
-    const projects = await asana.projects.findByTeam(team.id, {archived: false});
+    const projects = await asana.projects.findByTeam(team.gid, { archived: false });
 
     projects.data.forEach((project, i) => {
       setTimeout(async () => {
-        await asana.webhooks.create(project.id, config.asana.webhook.url)
+        await asana.webhooks.create(project.gid, config.asana.webhook.url)
           .then(res => console.log(`[${i + 1} / ${projects.data.length}]`,
-                                   `Webhook set on ${res.resource.name} (${res.resource.id})`))
+            `Webhook set on ${res.resource.name} (${res.resource.gid})`))
           .catch(error => console.log(`[${i + 1} / ${projects.data.length}]`,
-                                      project.name, error.value.errors));
+            project.name, error.value || error));
       }, i * 100);
     });
   }
