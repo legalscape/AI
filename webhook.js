@@ -9,9 +9,11 @@ const asana = Asana.Client.create().useAccessToken(config.asana.accessToken);
 const { WebClient } = require('@slack/client');
 const slack = new WebClient(config.slack.botUserAccessToken);
 
+const cors = require('cors');
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 
 app.post('/asana', async (req, res) => {
   const project = config.asana.universalProjectId;
