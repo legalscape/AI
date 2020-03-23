@@ -19,9 +19,10 @@ const myFilter = isPrivate => function ({ id, name }) {
   console.log('Fetching Asana user list...');
   let users = {};
   const knownAsanaUsers = existing ? existing.users.map(o => o.asana) : [];
-  for (const { id, name } of (await asana.users.findByWorkspace(config.asana.organizationId)).data) {
-    if (knownAsanaUsers.indexOf(id) < 0) {
-      users[name] = { asanaId: id };
+  for (const { gid, name } of (await asana.users.findByWorkspace(config.asana.organizationId)).data) {
+console.log({gid,name})
+    if (knownAsanaUsers.indexOf(gid) < 0) {
+      users[name] = { asanaId: gid };
     }
   }
 
