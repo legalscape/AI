@@ -14,7 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "@slack/client": "^4.12.0",
-    "asana": "^0.17.3",
+    "asana": "^0.18.0",
     "body-parser": "^1.19.0",
     "config": "^1.31.0",
     "cors": "^2.8.5",
